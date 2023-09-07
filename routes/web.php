@@ -73,6 +73,12 @@ Route::middleware([
 
         /* TRACK ORDER */
     Route::post('/trackorder',[HomeController::class,'trackorder']);    
+
+
+        /* RECENT ORDERS */
+    Route::get('/recentorder',[HomeController::class,'recentorder']);
+
+    Route::post('/recentorder/{order}',[HomeController::class,'recenttrack']);
 });
 
 /*  buynow */

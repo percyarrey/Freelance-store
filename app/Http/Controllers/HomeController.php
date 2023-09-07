@@ -249,4 +249,24 @@ class HomeController extends Controller
         return redirect()->back()->with('warning', 'Order ID is not Valid');
         
     }
+
+    /* RECENT ORDER */
+    public function recentorder()
+    {   
+        $orders = Order::where('user_id',Auth()->user()->id)->get();
+        return view('home.recentorder',compact('orders'));
+        
+    }
+    public function recenttrack(Order $order)
+    {   
+        if($order){
+            if($order->user_id == Auth()->user()->id){
+                $products = Product::find(unserialize($order->product_id));
+                $quantity = unserialize($order->quantity);
+                return view('home.checkout.checkout',compact('order','products','quantity'));
+            }
+        }
+        return redirect()->back()->with('warning', 'Order ID is not Valid');
+        
+    }
 }
