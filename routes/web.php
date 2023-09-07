@@ -26,15 +26,16 @@ Route::get('/contact',  function(){
     return view('home.contact');
 }); 
 Route::get('/trackorder',  function(){
-    return view('home.trackorder');
+    return view('home.trackorder.index');
 });
 
-        /* ADMIN ROUTE */
+        /* LOGIN ROUTE */
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+        /* ADMIN ROUTE */
     Route::get('/redirect',[HomeController::class,'redirect']);
 
     /*manage category */
@@ -52,5 +53,27 @@ Route::middleware([
 
     
     Route::delete('/editproducts/{product}',[AdminController::class,'destroyproduct']);
+
+        /* HOME ROUTE */
+    /* manage carts */
+    Route::get('/cart',[HomeController::class,'cart']);
+    Route::post('/cart/{product}',[HomeController::class,'crudcart']);
+    Route::delete('/cart/{cart}',[HomeController::class,'destroycart']);
+
+    /* manage orders */
+    Route::get('/orderdetail/{order}',[AdminController::class,'orderdetail']);
+    Route::put('/orderdetail/{order}',[AdminController::class,'orderstatus']);
+    Route::post('/order',[HomeController::class,'createorder']);
+    Route::delete('/orderdetail/{order}',[AdminController::class,'destroyorder']);
+
+    /* checkout */
+    Route::get('/checkout/{order}',[HomeController::class,'checkout']);
+
+    Route::post('/pdf/{order}', [HomeController::class, 'generatePdf'])->name('order.pdf');
+
+        /* TRACK ORDER */
+    Route::post('/trackorder',[HomeController::class,'trackorder']);    
 });
 
+/*  buynow */
+Route::get('/buynow/{product}',[HomeController::class,'buynow']);

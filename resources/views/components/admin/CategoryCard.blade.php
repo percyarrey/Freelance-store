@@ -19,8 +19,8 @@
                   <span aria-hidden="true">X</span>
                 </div>
               </div>
-              <div class="modal-body">
-                Are you sure you want to proceed? <b class="text-warning fs-5">Bewarned:</b>
+              <div class="modal-body text-center">
+                Are you sure you want to proceed? <br/><b class="text-warning fs-5">Bewarned:</b>
                 <b class="text-danger">It will delete all products with this category</b>
               </div>
               <div class="modal-footer">

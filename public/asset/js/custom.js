@@ -87,6 +87,17 @@ function handleCategory(e){
     /* window.location.href='/products?category={{}}' */
 }
 
+function handleStatus(e){
+    if($('#status')[0].value!='All'){
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('status', $('#status')[0].value);
+        window.location.search = urlParams;
+    }else{
+        window.location.href=window.location.pathname
+    }
+    /* window.location.href='/products?category={{}}' */
+}
+
 function appendSearchParam() {
     const searchInput = document.getElementById('searchInput');
     const searchTerm = searchInput.value;
@@ -98,3 +109,6 @@ function appendSearchParam() {
     window.location.search = urlParams;
     return false; // Prevents the form from submitting normally
   }
+
+
+

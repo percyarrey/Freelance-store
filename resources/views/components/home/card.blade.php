@@ -1,5 +1,5 @@
 @props(['product'])
-<div class="{{request()->is('editproducts') && Auth()->user()->usertype==1 ? 'col-md-6 col-lg-4' : 'col-sm-6 col-md-4 '}}">
+<div id="{{$product->id}}" class="{{request()->is('editproducts') && Auth()->user()->usertype==1 ? 'col-md-6 col-lg-4' : 'col-sm-6 col-md-4 '}}">
     <div class="box1">
       <div class="box" onclick="window.location.href = '/products/{{$product->id}}'">
         <div class="option_container">
@@ -56,14 +56,16 @@
           </div>
         </form>
     @else
-      <div class="justify-content-between d-flex ">
-        <button class="option2">
+      <form action="/cart/{{$product->id}}" method="POST" class="justify-content-between d-flex ">
+        @csrf
+        @method('POST')
+        <button type="submit" class="option2">
           Add Cart
         </button>
-        <button class="option3">
+        <a href="/buynow/{{$product->id}}" class="option3">
           Buy Now
-        </button>
-      </div>
+        </a>
+      </form>
     @endif
     
 

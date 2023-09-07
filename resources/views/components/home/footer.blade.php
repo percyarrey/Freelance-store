@@ -4,7 +4,7 @@
           <div class="col-md-4">
               <div class="full">
                  <div class="logo_footer">
-                    <a class="navbar-brand d-flex" href="/"><img width="30" src="{{asset('asset/logo/favicon.png')}}" alt="logo" /><span class="mt-1 fs-2 text-success d-none d-sm-block">Freelance Store</span></a>
+                    <a class="navbar-brand d-flex" href="/"><img width="30" src="{{asset('asset/logo/favicon.png')}}" alt="logo" /><span class="mt-1 fs-2 text-success">Freelance Store</span></a>
                  </div>
                  <div class="information_f">
                    <p><strong>ADDRESS:</strong> Cameroon, Buea, Molyko</p>
@@ -38,7 +38,7 @@
                       @else
                         <li><a href="/profile">Profile</a></li>
                       @endif
-                      <li><a href="/checkout">Checkout</a></li>
+                      <li><a href="/cart">Checkout</a></li>
                    </ul>
                 </div>
              </div>

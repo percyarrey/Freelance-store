@@ -16,6 +16,11 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category');
     }
 
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class,'product_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         if ($filters['category'] ?? false) {

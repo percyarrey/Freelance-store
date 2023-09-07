@@ -20,12 +20,39 @@
         <link type="text/css" href="{{ asset('asset/css/style.css') }}" rel="stylesheet">
         <!-- responsive style -->
         <link type="text/css" href="{{ asset('asset/css/responsive.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     </head>
     <body>
-        <x-home.header />
+      @php
+            if (!isset($cartcount) || $cartcount == 'undefined') {
+               $cartcount = -1;
+            }
+      @endphp
+        <x-home.header :cartcount="$cartcount"/>
+        <div >
+            @if(session('message'))
+               <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                     toastr.options = {
+                           "positionClass": "toast-center",
+                     };
+                     toastr.success('{{ session('message') }}');
+                  });
+               </script>
+            @endif
+            @if(session('warning'))
+               <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                     toastr.options = {
+                           "positionClass": "toast-center",
+                     };
+                     toastr.error('{{ session('warning') }}');
+                  });
+               </script>
+            @endif
+        </div>
 
         @yield('content')
-
         <x-home.footer />
       <!-- jQery -->
       <script src="{{ asset('asset/js/jquery-3.4.1.min.js') }}"></script>
@@ -35,5 +62,8 @@
       <script src="{{ asset('asset/js/bootstrap.js') }}"></script>
       <!-- custom js -->
       <script src="{{ asset('asset/js/custom.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     </body>
 </html>

@@ -1173,3 +1173,21 @@ form input[type="submit"]:focus {
 }
 
 
+.toast-center {
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.myCard {
+  overflow: hidden;
+}
+
+.myCard img{
+  transition: all 0.25s ease;
+}
+
+.myCard:hover img{
+  scale: 1.1;
+}

@@ -14,7 +14,7 @@
        </div>
     </div>
  </section>
- <div class="mt-4 p-4">
-    {{$products->links()}}
- </div>
+ <div class="mt-4 py-2 d-flex justify-content-center">
+   {{$products->links()}}
+</div>
 @endsection

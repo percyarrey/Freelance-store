@@ -7,16 +7,17 @@
               <div class="col-md-6 d-flex justify-content-center">
                 <img src="{{asset('storage/'.$product->imgpath)}}" alt="{{$product->name}}" class="img-fluid">
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6" id="quantity">
                 <h2 class="mt-2">{{$product->name}}</h2>
                 <p class="text-muted">{{$category->category}}</p>
-                <h4>Price: {{$product->price}}</h4>
+                <h4>Price: {{$product->price}}frs</h4>
                 <p>{{$product->description}}</p>
 
-                <form>
+                <form method="POST" action="/cart/{{$product->id}}">
+                  @csrf
                     <div class="form-group">
                         <label for="quantity">Quantity ({{$product->quantity}}):</label>
-                        <input min="1" max="{{$product->quantity}}" type="number" id="quantity" class="form-control mt-2" min="1" max="10" value="1">
+                        <input min="1" max="{{$product->quantity}}" type="number"  name="quantity" class="form-control mt-2" value="1">
                       </div>
                       <div class="d-flex gap-4 mt-3">
                           <button class="btn btn-outline-dark mr-2">Add to Cart</button>

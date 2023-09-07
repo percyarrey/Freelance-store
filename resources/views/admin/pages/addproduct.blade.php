@@ -4,14 +4,6 @@
 
 <div class="d-flex justify-content-center">
     <div class="w-100" style="max-width: 40rem">
-        @if(session()->has('message'))
-            <div class="alert alert-success d-flex justify-content-between">
-                
-                {{session()->get('message')}}
-                <button type="button" class="close ms-auto btn m-0 p-0" data-dismiss="alert" aria-hidden="true">X
-                </button>
-            </div>
-    @endif
     <form action="/createproduct" class="w-100 shadow-sm bg-light border py-4 rounded-3 px-2 px-sm-3 px-lg-4"  method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')

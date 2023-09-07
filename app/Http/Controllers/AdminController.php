@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\category;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class AdminController extends Controller
         $data->category=$request->category;
         $data->save();
         
-        return redirect()->back()->with('message',$request->category.' Category Added Succesfully');
+        return redirect()->back()->with('message','Category Added Succesfully');
     }
 
     public function destroycategory(category $category)
@@ -44,7 +45,7 @@ class AdminController extends Controller
             }
         }
         $category->delete();
-        return redirect()->back()->with('message','Category Deleted  Succesfully');
+        return redirect()->back()->with('warning','Category Deleted  Succesfully');
     }
 
     /*MANAGE PRODUCTS */
@@ -105,13 +106,18 @@ class AdminController extends Controller
     {
         $formfield = $request->validate([
             'name' => ['required'],
-            'imgpath' => ['required', 'file', 'max:1024'],
+            'imgpath' => ['file', 'max:1024'],
             'quantity' => ['required'],
             'price' => ['required'],
             'description' => ['required']
         ]);
-        Storage::disk('public')->delete($product->imgpath);
-        $formfield['imgpath'] = $request->file('imgpath')->store('images','public');
+        if($request->file('imgpath')){
+            Storage::disk('public')->delete($product->imgpath);
+            $formfield['imgpath'] = $request->file('imgpath')->store('images','public');
+        }else{
+            $formfield['imgpath'] = $product->imgpath;
+        }
+        
         $product->update($formfield);
         return redirect()->back()->with('message','Product Updated Succesfully');
     }
@@ -120,7 +126,42 @@ class AdminController extends Controller
     {
         Storage::disk('public')->delete($product->imgpath);
         $product->delete();
-        return redirect()->back()->with('message','Product Deleted Succesfully');
+        return redirect()->back()->with('warning','Product Deleted Succesfully');
+    }
+
+    /* MANAGE ORDERS*/
+    public function orderdetail(Order $order)
+    {   
+        $usertype = Auth::user()->usertype;
+        if($usertype==1){
+            $order->new=1;
+            $order->save();
+            $products = Product::find(unserialize($order->product_id));
+            $quantity = unserialize($order->quantity);
+            return view('admin.pages.order.orderdetail',compact('order','products','quantity'));
+        }
+        return redirect('/');
+        
+    }
+    public function orderstatus(Request $request, Order $order)
+    {   
+        $usertype = Auth::user()->usertype;
+        if($usertype==1){
+            if($request->status){
+                $order->status=$request->status;
+                $order->save();
+                return redirect()->back()->with('message','Status Updated Succesfully');
+            }
+            return redirect()->back()->with('warning','Please Select a Status');
+        }
+        return redirect('/');
+        
+    }
+
+    public function destroyorder(Order $order)
+    {
+        $order->delete();
+        return redirect('/redirect')->with('warning','Order Deleted Succesfully');
     }
 
 }

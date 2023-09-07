@@ -5,7 +5,20 @@
 <div class="container-fluid container-lg"  style="min-height: 50vh;margin-top:30px;">
     <div class="row">
 		<div class="col-xs-12">
-		  <h3 class="text-success text-decoration-underline">Admin Panel </h3>
+		  <div class="d-flex  justify-content-between gap-1">
+			<h3 class="text-success text-decoration-underline">Admin Panel </h3>
+			@if (request()->is('redirect') && Auth()->user()->usertype==1)
+			<select onchange="handleStatus()" class="form-select w-50 mb-md-2" aria-label="status" id="status" name="status" required>
+				<option  disabled {{ !request('status') ? 'selected' : '' }}>Sort status</option>
+				<option value="All">All</option>
+				  <option value="Pending"  {{ ('Pending' == request('status')) ? 'selected' : '' }}>Pending</option>
+				  <option value="Processing"  {{ 'Processing' == request('status') ? 'selected' : '' }}>Processing</option>
+				  <option value="Shipped"  {{ 'Shipped' == request('status') ? 'selected' : '' }}>Shipped</option>
+				  <option value="Delivered"  {{ 'Delivered' == request('status') ? 'selected' : '' }}>Delivered</option>
+			</select>
+			@endif
+			
+		  </div>
 			<!-- tabs -->
 			<div class="tabs-left row">
 				<ul class="nav nav-tabs col-12 col-sm-3 col-lg-2">

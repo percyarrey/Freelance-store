@@ -1,5 +1,6 @@
 @extends('layout')
 
+
 @section('content')
     {{-- HERO --}}
      <div class="hero_area">

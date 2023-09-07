@@ -3,14 +3,7 @@
 @section('contet')
 <div class="d-flex justify-content-center">
     <div class="position-relative w-100" style="max-width: 40rem">
-        @if(session()->has('message'))
-            <div class="alert alert-success d-flex justify-content-between">
-                
-                {{session()->get('message')}}
-                <button type="button" class="close ms-auto btn m-0 p-0" data-dismiss="alert" aria-hidden="true">X
-                </button>
-            </div>
-        @endif
+
         <h5 class=" text-center">Add Category</h5>
         <form action="{{url('/addcategory')}}" method="POST" class="row p-1 m-0">
             @csrf

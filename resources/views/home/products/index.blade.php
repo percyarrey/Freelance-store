@@ -2,7 +2,8 @@
 
 @section('content')
 {{-- PRODUCTS SEARCH BAR --}}
-<div  style="margin-top: 40px"></div>
+<div  style="margin-top: 40px">
+</div>
  
 <x-home.searchbar :category="$category"/>
 
@@ -16,7 +17,7 @@
        </div>
     </div>
  </section>
- <div class="mt-4 p-4">
+ <div class="mt-4 py-2 d-flex justify-content-center">
     {{$products->links()}}
  </div>
  @endsection
