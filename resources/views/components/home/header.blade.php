@@ -8,8 +8,10 @@
                <div>
                   <a href="/cart" type="button" class="btn btn-light shadow-sm position-relative">
                      <i class="fas fa-shopping-cart " style="scale: 1.2"></i>
-                     @if($cartcount>=0)
-                        <span class="text-light bg-danger rounded-circle" style="position: absolute; right:0;top:0;width:1.2rem;height:1.2rem;display:flex;align-items:center;justify-content:center;">{{$cartcount}}</span>
+                     @if(is_object($cartcount))
+                        @if(count($cartcount)>=0)
+                           <span class="text-light bg-danger rounded-circle" style="position: absolute; right:0;top:0;width:1.2rem;height:1.2rem;display:flex;align-items:center;justify-content:center;">{{count($cartcount)}}</span>
+                        @endif
                      @endif
                    </a>
                </div>

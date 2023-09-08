@@ -12,7 +12,7 @@
     <div class="container-lg">
        <div class="row">
         @foreach ($products as $product)
-            <x-home.card :product="$product" />
+            <x-home.card :product="$product" :cartcount='$cartcount'/>
         @endforeach
        </div>
     </div>

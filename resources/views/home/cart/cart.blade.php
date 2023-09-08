@@ -29,7 +29,7 @@
                     <x-home.cartcard :product="$product" :cart="$cart" />
                 @endif
             @endforeach
-            @if($cartcount<=0)
+            @if(count($cartcount)<=0)
                 <div>
                     <p class="text-center">No Product Found in Cart</p>
                 </div>
@@ -73,13 +73,13 @@
                         </p>
                     </div>
 
-                    <a href="{{$cartcount>0 ? '#checkout':'/products'}}" class="btn btn-warning w-100 shadow-sm">Placed Order</a>
+                    <a href="{{count($cartcount)>0 ? '#checkout':'/products'}}" class="btn btn-warning w-100 shadow-sm">Placed Order</a>
                 </div>
             </div>
         </div>
     </section>
 
-    @if ($cartcount>0)
+    @if (count($cartcount)>0)
     <div id="checkout" style="height: 4rem;"></div>
     {{-- CHECKOUT --}}
     <section  class="bg-light shadow-sm mb-3" style="border-top:1px solid rgba(128, 128, 128, 0.542);">

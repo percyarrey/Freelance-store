@@ -1,4 +1,9 @@
-@props(['product'])
+@props(['product','cartcount'])
+@php
+    if (!isset($cartcount) || $cartcount == 'undefined') {
+        $cartcount = -1;
+    }
+@endphp
 <div id="{{$product->id}}" class="{{request()->is('editproducts') && Auth()->user()->usertype==1 ? 'col-md-6 col-lg-4' : 'col-sm-6 col-md-4 '}}">
     <div class="box1">
       <div class="box" onclick="window.location.href = '/products/{{$product->id}}'">
@@ -59,9 +64,31 @@
       <form action="/cart/{{$product->id}}" method="POST" class="justify-content-between d-flex ">
         @csrf
         @method('POST')
-        <button type="submit" class="option2">
-          Add Cart
-        </button>
+        @if(is_object($cartcount))
+            @php
+              $hasProduct = false;
+              foreach ($cartcount as $cart) {
+                  if ($cart->product_id == $product->id) {
+                      $hasProduct = true;
+                      break;
+                  }
+              }
+            @endphp
+          @if ($hasProduct)
+            <div type="button" class="btn" style="opacity: 0.35;border:1px solid black;cursor:default;">
+              Added
+            </div>
+          @else
+            <button type="submit" class="option2">
+              Add Cart
+            </button>
+          @endif
+        @else
+          <button type="submit" class="option2">
+            Add Cart
+          </button>
+        @endif
+        
         <a href="/buynow/{{$product->id}}" class="option3">
           Buy Now
         </a>

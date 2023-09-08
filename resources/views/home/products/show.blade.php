@@ -16,25 +16,48 @@
                 <form method="POST" action="/cart/{{$product->id}}">
                   @csrf
                     <div class="form-group">
+                      @php
+                        $hasProduct = false;
+                        $quantity = 1;
+                        foreach ($cartcount as $cart) {
+                            if ($cart->product_id == $product->id) {
+                                $hasProduct = true;
+                                $quantity=$cart->quantity;
+                                break;
+                            }
+                        }
+                      @endphp
                         <label for="quantity">Quantity ({{$product->quantity}}):</label>
-                        <input min="1" max="{{$product->quantity}}" type="number"  name="quantity" class="form-control mt-2" value="1">
+                        <input min="1" max="{{$product->quantity}}" type="number"  name="quantity" class="form-control mt-2" value="{{$quantity}}">
                       </div>
                       <div class="d-flex gap-4 mt-3">
-                          <button class="btn btn-outline-dark mr-2">Add to Cart</button>
-                          <button class="btn btn-success">Buy Now</button>
+                        @if ($hasProduct)
+                          <button type="submit" class="btn btn-outline-dark mr-2">Update Quantity</button>
+                          @else
+                            <button type="submit" class="btn btn-outline-dark mr-2">Add to Cart</button>
+                          @endif
+
+
+                        <a href="/buynow/{{$product->id}}" class="btn btn-success">
+                          Buy Now
+                        </a>
                       </div>
                 </form>
               </div>
             </div>
           </div>
     </section>
-
     <section class="product_section mb-3">
         <div class="container-lg mt-4">
         <h2 class="m-0 p-0">Related Products</h2>
            <div class="row">
+            @php
+              $products = $products->filter(function ($cart) use($product){
+                return $cart->id != $product->id;
+              })
+            @endphp
             @foreach ($products as $product)
-                <x-home.card :product="$product" />
+                <x-home.card :product="$product" :cartcount="$cartcount"/>
             @endforeach
            </div>
            <div class="btn-box">

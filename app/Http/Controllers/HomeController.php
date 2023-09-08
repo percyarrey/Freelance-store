@@ -35,7 +35,7 @@ class HomeController extends Controller
     {   
         if(Auth::user()){
             $cartcount = Cart::where('user_id', Auth()->user()->id)
-            ->count();  
+            ->get();  
         }else{
             $cartcount=0;
         }
@@ -48,7 +48,7 @@ class HomeController extends Controller
     {
         if(Auth::user()){
             $cartcount = Cart::where('user_id', Auth()->user()->id)
-            ->count();  
+            ->get();  
         }else{
             $cartcount=0;
         }
@@ -63,7 +63,7 @@ class HomeController extends Controller
     {
         if(Auth::user()){
             $cartcount = Cart::where('user_id', Auth()->user()->id)
-            ->count();  
+            ->get();  
         }else{
             $cartcount=0;
         }
@@ -81,7 +81,7 @@ class HomeController extends Controller
 
         if(Auth::user()){
             $cartcount = Cart::where('user_id', Auth()->user()->id)
-            ->count();  
+            ->get();  
         }else{
             $cartcount=0;
         }
@@ -122,7 +122,6 @@ class HomeController extends Controller
                             'quantity'=>$request->quantity,
                         ]);
                     }
-                    
                     return redirect()->back()->with('message','Quantity Updated Succesfully')->setTargetUrl(url()->previous() . '#quantity');
                 }
                 return redirect()->back()->with('warning','Product Already Exist')->setTargetUrl(url()->previous() . '#quantity');
