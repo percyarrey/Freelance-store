@@ -29,7 +29,7 @@
             }
       @endphp
         <x-home.header :cartcount="$cartcount"/>
-        <div >
+        <div  class="text-center">
             @if(session('message'))
                <script>
                   document.addEventListener('DOMContentLoaded', function() {

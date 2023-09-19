@@ -1,4 +1,4 @@
-@props(['products','order','quantity'])
+@props(['products','order','quantity','prices'])
 
 <div class=" container-fluid container mt-5">
     <div class="card">
@@ -54,8 +54,8 @@
               <tr>
                 <td>{{$product->name}}</td>
                 <td>{{$quantity[$loop->index]}}</td>
-                <td>{{$product->price}}frs</td>
-                <td class="fw-bold" style="opacity: 0.78;">{{$product->price * $quantity[$loop->index]}}frs</td>
+                <td>{{$prices[$loop->index] }}frs</td>
+                <td class="fw-bold" style="opacity: 0.78;">{{$prices[$loop->index] * $quantity[$loop->index]}}frs</td>
               </tr>
             @endforeach
             <tr>

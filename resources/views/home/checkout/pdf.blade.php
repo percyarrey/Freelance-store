@@ -32,8 +32,8 @@
               <tr>
                 <td style="text-align: center">{{$product->name}}</td>
                 <td style="text-align: center">{{$quantity[$loop->index]}}</td>
-                <td style="text-align: center">{{$product->price}}frs</td>
-                <td style="text-align: center;font-weight:600;opacity:0.75;">{{$product->price * $quantity[$loop->index]}}frs</td>
+                <td style="text-align: center">{{$prices[$loop->index]}}frs</td>
+                <td style="text-align: center;font-weight:600;opacity:0.75;">{{$prices[$loop->index] * $quantity[$loop->index]}}frs</td>
               </tr>
             @endforeach
             <tr >

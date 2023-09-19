@@ -79,6 +79,7 @@ function confirmAction() {
 function handleCategory(e){
     if($('#selectcategory')[0].value!='n'){
         const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('page')
         urlParams.set('category', $('#selectcategory')[0].value);
         window.location.search = urlParams;
     }else{
@@ -91,6 +92,7 @@ function handleStatus(e){
     if($('#status')[0].value!='All'){
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.set('status', $('#status')[0].value);
+        urlParams.delete('page')
         window.location.search = urlParams;
     }else{
         window.location.href=window.location.pathname
@@ -104,11 +106,43 @@ function appendSearchParam() {
     console.log('searchTerm')
 
     const urlParams = new URLSearchParams(window.location.search);
+    urlParams.delete('page');
     urlParams.set('search', searchTerm);
 
     window.location.search = urlParams;
     return false; // Prevents the form from submitting normally
   }
 
+//HANDLE PRICE
+const priceCut = document.querySelectorAll('#priceCut');
+priceCut.forEach(e=>{
+    let num;
+    if(e.textContent>=1000000){
+        num = e.textContent/1000000
+        if(!(Number.isInteger(num))){
+            num=(num).toFixed(1);    
+        }
+        e.textContent=num + 'M';
+    }else{
+        if(e.textContent>=1000){
+            num = e.textContent/1000
+            if(!(Number.isInteger(num))){
+                num=(num).toFixed(1);    
+            }
+            e.textContent=num + 'k';
+        }
+    }
+    
+})
 
+/* HANDLE DISCOUNT */
 
+function handleDiscount(){
+    if($('#discountinput')[0].disabled){
+        $('#discountinput')[0].disabled=false
+    }else{
+        $('#discountinput')[0].value=''
+        $('#discountinput')[0].disabled=true
+
+    }
+}

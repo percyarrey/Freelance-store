@@ -2,6 +2,6 @@
 
 @section('contet')
 
-<x-home.ordercard :order='$order' :products="$products" :quantity="$quantity"/>
+<x-home.ordercard :prices='$prices' :order='$order' :products="$products" :quantity="$quantity"/>
 
 @endsection

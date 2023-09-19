@@ -10,7 +10,13 @@
               <div class="col-md-6" id="quantity">
                 <h2 class="mt-2">{{$product->name}}</h2>
                 <p class="text-muted">{{$category->category}}</p>
-                <h4>Price: {{$product->price}}frs</h4>
+                <h4>Price: 
+                  @if($product->discount)
+                  <span style="text-decoration:line-through;" class="text-danger">{{$product->price}}</span><span class="ms-2">{{$product->discount}} frs</span>
+                  @else 
+                  <span  class="ms-2">{{$product->price}}frs</span>
+                  @endif
+                </h4>
                 <p>{{$product->description}}</p>
 
                 <form method="POST" action="/cart/{{$product->id}}">
@@ -19,12 +25,14 @@
                       @php
                         $hasProduct = false;
                         $quantity = 1;
-                        foreach ($cartcount as $cart) {
+                        if(is_object($cartcount)){
+                          foreach ($cartcount as $cart) {
                             if ($cart->product_id == $product->id) {
                                 $hasProduct = true;
                                 $quantity=$cart->quantity;
                                 break;
                             }
+                          }
                         }
                       @endphp
                         <label for="quantity">Quantity ({{$product->quantity}}):</label>

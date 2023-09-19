@@ -53,6 +53,19 @@
             @enderror
             <div class="mb-3"></div>
 
+            {{-- DISCOUNT --}}
+        <div style="h" class="fw-bold opacity-75 mt-1 d-flex gap-3">
+            <nobr>Discount price <small >(optional)</small></nobr>
+            <div>
+                <input onchange="handleDiscount()" type="checkbox" class="m-0 p-0 bg-black" style="height: 1rem,width:1.4rem;"/>
+            </div>
+        </div>
+        <input disabled id="discountinput" type="number" id="discount" name='discount' value="{{old('discount')}}" class="form-control mb-0 pb-0 mt-1" placeholder="" />
+            @error('discount')
+                <small class='text-danger'>{{$message}}</small> <br/>
+            @enderror
+            <div class="mb-3"></div>
+        
         {{-- DESCRIPTION --}}
         <label class="fw-bold opacity-75 mt-1" for="description">Description</label>
         <textarea  id="description" name='description' class="form-control mb-0 pb-0" placeholder="" >{{old('description')}}</textarea>

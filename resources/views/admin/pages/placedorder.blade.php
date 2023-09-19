@@ -8,7 +8,7 @@
     <div class="mt-4 py-2 d-flex justify-content-center">
         {{$orders->links()}} 
         @if(!($orders->total()))
-            <h3 class="text-center">No order has been Placed</h3>
+            <h3 class="text-center">No order Found</h3>
         @endif
      </div>
 @endsection

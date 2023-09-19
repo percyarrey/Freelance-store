@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('category')->nullable();
             $table->foreign('category')->references('id')->on('categories')->onDelete('cascade');
             $table->bigInteger('price'); // Corrected column type
-            $table->text('description');
+            $table->text('discount')->nullable();
             $table->integer('quantity');
+            $table->text('description');
             $table->timestamps();
         });
     }

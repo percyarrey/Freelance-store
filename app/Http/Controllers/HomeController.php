@@ -10,10 +10,12 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\category;
 
+use App\Mail\WelcomeEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
@@ -23,11 +25,15 @@ class HomeController extends Controller
     {
         $usertype = Auth::user()->usertype;
         if($usertype == '1'){
+            
+
+            Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
             $orders = Order::latest()->filter(request(['status']))->paginate(5);;
-            return view('admin.pages.placedorder',compact('orders'));
+            return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Send');;
         }
         else{
-            return redirect('/');
+            Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
+            return redirect('/')->with('message', 'Welcome Email Send');
         }
     }
 
@@ -109,7 +115,7 @@ class HomeController extends Controller
                 }
             }
             $cart->save();
-            return redirect()->back()->with('message', 'Product Added Successfully')->setTargetUrl(url()->previous() . '#'.$product->id);
+            return redirect()->back()->with('message', 'Product Added to Cart')->setTargetUrl(url()->previous() . '#'.$product->id);
         }else{
             if($request->quantity){
                 if($request->quantity !=$result->quantity){
@@ -169,27 +175,28 @@ class HomeController extends Controller
         /* GETTTING PRODUCT ID's */
         $product_ids=[];
         $prices=[];
+        $amount = [];
         $carts = Cart::where('user_id', Auth()->user()->id)
             ->get();
         foreach ($carts as $cart){
             $product = $cart->product;
             $product_ids[] = $product->id;
-            $prices[] = $product->price;
+            $prices[] = $product->discount ? $product->discount :$product->price;
+            $amount[] = $product->discount ? $product->discount * $cart->quantity :$product->price * $cart->quantity ;
         }
         $formfield['product_id']=serialize($product_ids);
 
 
         /* GETTTING QUANTITIES */
         $quantities=[];
-        $carts = Cart::where('user_id', Auth()->user()->id)
-            ->get();
         foreach ($carts as $cart){
             $quantities[]= $cart->quantity;
         }
         $formfield['quantity']=serialize($quantities);
-
         /* AMOUNT */
-        $formfield['amount'] = array_sum($prices);
+        $formfield['amount'] = array_sum($amount);
+        $formfield['price']=serialize($prices);
+
         Order::create($formfield);  
         $order = Order::where('order_id',$formfield['order_id'])->get();
      
@@ -203,9 +210,10 @@ class HomeController extends Controller
         if($order->user_id == Auth()->user()->id){
             $products = Product::find(unserialize($order->product_id));
             $quantity = unserialize($order->quantity);
-            return view('home.checkout.checkout',compact('order','products','quantity'));
+            $prices = unserialize($order->price);
+            return view('home.checkout.checkout',compact('order','products','quantity','prices'));
         }
-        return redirect('/');
+        return redirect('/login');
         
     }
 
@@ -214,10 +222,12 @@ class HomeController extends Controller
         if($order->user_id == Auth()->user()->id || Auth()->user()->usertype==1){
             $products = Product::find(unserialize($order->product_id));
             $quantity = unserialize($order->quantity);
+            $prices = unserialize($order->price);
             $data = [
                 'products'=>$products,
                 'quantity'=>$quantity,
                 'order'=>$order,
+                'prices'=>$prices,
             ]; // Replace this with your actual data retrieval logic
             
             $pdf = new Dompdf();
@@ -242,10 +252,11 @@ class HomeController extends Controller
             if($order->user_id == Auth()->user()->id){
                 $products = Product::find(unserialize($order->product_id));
                 $quantity = unserialize($order->quantity);
-                return view('home.checkout.checkout',compact('order','products','quantity'));
+                $prices = unserialize($order->price);
+                return view('home.checkout.checkout',compact('order','products','quantity','prices'));
             }
         }
-        return redirect()->back()->with('warning', 'Order ID is not Valid');
+        return redirect()->back()->with('warning', 'Order thus not exist in our Records');
         
     }
 
@@ -262,7 +273,8 @@ class HomeController extends Controller
             if($order->user_id == Auth()->user()->id){
                 $products = Product::find(unserialize($order->product_id));
                 $quantity = unserialize($order->quantity);
-                return view('home.checkout.checkout',compact('order','products','quantity'));
+                $prices = unserialize($order->price);
+                return view('home.checkout.checkout',compact('order','products','quantity','prices'));
             }
         }
         return redirect()->back()->with('warning', 'Order ID is not Valid');

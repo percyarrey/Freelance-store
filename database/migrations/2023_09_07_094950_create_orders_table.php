@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->text('product_id');
             $table->text('quantity');
+            $table->text('price')->nullable();
             $table->string('amount');
             $table->boolean('new')->default(false);
             $table->string('status')->default('Pending');

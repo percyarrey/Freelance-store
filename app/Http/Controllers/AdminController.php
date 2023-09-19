@@ -98,6 +98,10 @@ class AdminController extends Controller
             'description' => ['required']
         ]);
         $formfield['imgpath'] = $request->file('imgpath')->store('images','public');
+        
+        if($request->discount){
+            $formfield['discount'] = $request->discount;
+        }
         Product::create($formfield);
         return redirect()->back()->with('message','Product Added  Succesfully');
     }
@@ -117,9 +121,15 @@ class AdminController extends Controller
         }else{
             $formfield['imgpath'] = $product->imgpath;
         }
+
+        if($request->discount){
+            $formfield['discount'] = $request->discount;
+        }else{
+            $formfield['discount'] = null;
+        }
         
         $product->update($formfield);
-        return redirect()->back()->with('message','Product Updated Succesfully');
+        return redirect('/editproducts')->with('message','Product Updated Succesfully');
     }
 
     public function destroyproduct(Product $product)
@@ -138,7 +148,8 @@ class AdminController extends Controller
             $order->save();
             $products = Product::find(unserialize($order->product_id));
             $quantity = unserialize($order->quantity);
-            return view('admin.pages.order.orderdetail',compact('order','products','quantity'));
+            $prices = unserialize($order->price);
+            return view('admin.pages.order.orderdetail',compact('order','products','quantity','prices'));
         }
         return redirect('/');
         

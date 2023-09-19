@@ -8,21 +8,22 @@
         </div>
         @php
              $modifiedString = Str::replace('/', '', request()->path());
-             $modifiedString = Str::substr($modifiedString, 0, -2);
-             
+             $modifiedString = Str::substr($modifiedString, 0, 11);
         @endphp
         @if(!(request()->is('trackorder') || $modifiedString=='recentorder'))
-          <h4 class="fw-bold text-success">Order Placed, Thank You</h4>
-          <i class="fa fa-check-circle ms-3 text-success" style="font-size: 24px;"></i>
+          <div class="d-flex">
+            <span class="fw-bold text-success fs-4 ">Order Placed, Thank You</span>
+            <i class="fa fa-check-circle ms-3 text-success" style="font-size: 24px;"></i>
+          </div>
           <p class="mb-1">Confirmation will be sent to your email</p>
         @else
-          <h5 class="fw-bold text-success text-center">Your Order if been Processed.<br/> Thank You for your patience</h5>
+          <h5 class="fw-bold text-success text-center">Your Order is been Processed.<br/> Thank You for your patience</h5>
           <p class="mb-1"><a href="/contact">Contact us</a> in case you have any question</p>
         @endif
         <a class="btn text-success text-decoration-underline" href="/products">See More Products</a>
       </div>
 
-  <x-home.ordercard :order='$order' :products="$products" :quantity="$quantity"/>
+  <x-home.ordercard :prices='$prices' :order='$order' :products="$products" :quantity="$quantity"/>
 </div>
 @endsection
 

@@ -26,7 +26,12 @@
           {{ Illuminate\Support\Str::limit($product->name, 25, '...') }}
         </h5>
             <h6>
-                {{$product->price}}frs
+              @if($product->discount)
+                <span id="priceCut" style="text-decoration:line-through;" class="text-danger">{{$product->price}}</span><span id="priceCut" class="ms-2">{{$product->discount}} frs</span>
+              @else 
+               <span id="priceCut" class="ms-2">{{$product->price}}frs</span>
+              @endif
+                
             </h6>
       </div>
     </div>

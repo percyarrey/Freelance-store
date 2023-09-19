@@ -65,7 +65,11 @@
                             @foreach ($products as $index => $product)
                                 @php
                                     if($product){
-                                        $Tprice += $product->price * $carts[$loop->index]->quantity;
+                                        if($product->discount){
+                                            $Tprice += $product->discount * $carts[$loop->index]->quantity;
+                                        }else{
+                                            $Tprice += $product->price * $carts[$loop->index]->quantity;
+                                        }
                                     }
                                 @endphp
                             @endforeach

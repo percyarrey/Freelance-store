@@ -24,8 +24,8 @@
         </form>
     </div>
     <div class="col-4 col-sm-3 d-flex  justify-content-between ps-md-4 overflow-hidden pe-md-5 fw-bold">
-        <div>
-            {{$product->price * $cart->quantity}}frs
+        <div class={{$product->discount?'text-danger':''}}>
+            {{$product->discount?$product->discount * $cart->quantity:$product->price * $cart->quantity}}frs
         </div>
         <form  class="pb-1"  action="/cart/{{$cart->id}}" class="justify-content-between d-flex" method="POST">
             @csrf
