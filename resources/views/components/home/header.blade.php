@@ -37,7 +37,7 @@
 
                          @endif
                            <li><a class="dropdown-item" href="/recentorder">Your orders</a></li>
-                           <li><a class="dropdown-item" href="/recentorder">Profile</a></li>
+                           <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
                            <li>
                              <a class="dropdown-item" href="{{ route('logout') }}"
                                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
