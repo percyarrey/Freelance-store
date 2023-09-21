@@ -11,7 +11,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="shortcut icon" type="" href="{{ asset('asset/logo/favicon.png') }}">
-        <title>Freelance store - Buy Your Fashion Online</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
         <!-- bootstrap core css -->
         <link type="text/css" href="{{ asset('asset/css/bootstrap.css') }}" rel="stylesheet">
         <!-- font awesome style -->

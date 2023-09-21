@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Dompdf\Dompdf;
 use App\Models\Cart;
-use App\Models\User;
 
+use App\Models\User;
 use App\Models\Order;
+use App\Models\emails;
+
 use App\Models\Product;
 use App\Models\category;
-
 use App\Mail\WelcomeEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\View;
+use Laravel\Socialite\Facades\Socialite;
+
 
 class HomeController extends Controller
 {
@@ -25,15 +30,23 @@ class HomeController extends Controller
     {
         $usertype = Auth::user()->usertype;
         if($usertype == '1'){
-            
-
-            Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
             $orders = Order::latest()->filter(request(['status']))->paginate(5);;
-            return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Send');;
+            try{
+                Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
+                
+                return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Send');
+            }catch( Exception $e){
+                return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Not Send');
+            }
         }
         else{
-            Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
-            return redirect('/')->with('message', 'Welcome Email Send');
+            try{
+                Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
+                return redirect('/')->with('message', 'Welcome Email Send');
+            }catch(Exception $e){
+                return redirect('/')->with('warning', 'Welcome Email Not Send');
+            };
+            
         }
     }
 
@@ -279,5 +292,101 @@ class HomeController extends Controller
         }
         return redirect()->back()->with('warning', 'Order ID is not Valid');
         
+    }
+
+
+
+    /* GOOGLE PROVIDER */
+    public function googlepage()
+    {
+        return socialite::driver('google')->redirect();
+    }
+
+    public function googlecallback()
+    {
+        try {
+
+      
+
+            $user = Socialite::driver('google')->user();
+
+       
+
+            $finduser = User::where('google_id', $user->id)->first();
+
+       
+
+            if($finduser)
+
+
+
+            {
+
+       
+
+                Auth::login($finduser);
+
+      
+
+                return redirect('/');
+
+       
+
+            }
+
+
+
+            else
+
+
+
+            {
+
+                $newUser = User::create([
+
+                    'name' => $user->name,
+
+                    'email' => $user->email,
+
+                    'google_id'=> $user->id,
+
+                    'password' => encrypt('123456dummy')
+
+                ]);
+
+      
+
+                Auth::login($newUser);
+
+      
+
+                return redirect('/');
+
+            }
+
+      
+
+        } catch (Exception $e) {
+
+            dd($e->getMessage());
+
+        }
+    }
+
+    public function emailsubscribe(Request $request){
+        if($request->email){
+            $result = emails::where('emails',$request->email)->first();
+            if($result){
+                return response()->json(['res' => false]);
+            }
+            if(!$result){
+                emails::create([
+                    'emails'=>$request->email
+                ]);
+            }
+            return response()->json(['res' => true]);
+        }else{
+            return response()->json(['res' => false]);
+        }
     }
 }

@@ -61,6 +61,16 @@
                     {{ __('Register') }}
                 </x-button>
             </div>
+            <div class="flex items-center justify-end mt-4">
+                
+                <a class="text-cyan-700 font-bold ml-4 mr-4 items-center px-4 py-2 border rounded-md text-xs bg-white uppercase tracking-widest focus:outline-black focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 w-full hover:outline-cyan-500 hover:outline-1 flex justify-between h-8 mr-3']" href="{{url('auth/google')}}">
+                    <div>
+                        <i class="fab fa-google text-red-600"></i>
+                    </div>
+                    <div class=' w-8/12'>Login with Google</div>
+                </a>
+                
+            </div>
             <div class="mt-4">Already have an Account? <a href="/login" class=" text-sky-800 underline">Login</a></div>
         </form>
     </x-authentication-card>

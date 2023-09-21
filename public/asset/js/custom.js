@@ -146,3 +146,31 @@ function handleDiscount(){
 
     }
 }
+
+/* HANDLE FORM SUBMIT DATA */
+
+function handleEmailsSubmit(e,crsf) {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    // Retrieve the name input value
+    var name = $('#email').val();
+    // Send the form data to the server using AJAX
+    $.ajax({
+        url: '/emailsubscribe',
+        type: 'POST',
+        data: { 'email': name,'_token':crsf},
+        dataType: 'json',
+        success: function(response) {
+            // Handle the response from the server (if needed)
+            if(response.res){
+                toastr.success('Email added Succesfully');
+            }else{
+                toastr.error('Email already Exist');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle any errors that occurred during the AJAX request
+            toastr.error('Failed to add Email');
+        }
+    });
+};

@@ -6,6 +6,7 @@
 body {
   font-family: 'Montserrat', sans-serif;
   color: #0c0c0c;
+  font-weight: 400;
   background-color: #ffffff;
   overflow-x: hidden;
 }
@@ -562,10 +563,18 @@ a:focus {
 .why_section .box {
     text-align: center;
     margin-top: 45px;
-    background-color: #002c3e;
+    background-color: #105836;
     padding: 45px 50px;
     border-radius: 5px;
     color: #ffffff;
+    transition: all 0.5s ease;
+}
+
+.why_section .box:hover {
+  background-color: #004022;
+  padding: 45px 50px;
+  border-radius: 5px;
+  color: #ffffff;
 }
 
 .detail-box h5 {

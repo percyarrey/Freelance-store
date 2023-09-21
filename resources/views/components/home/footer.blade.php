@@ -51,10 +51,11 @@
                      <p>Subscribe by our newsletter and get update protidin.</p>
                    </div>
                    <div class="form_sub">
-                      <form>
+                      <form onsubmit="handleEmailsSubmit(event,'{{ csrf_token()}}')" method="POST" action="/emailsubscribe">
+                        @csrf
                          <fieldset>
                             <div class="field">
-                               <input type="email" placeholder="Enter Your Mail" name="email" />
+                               <input required type="email" name="email" id="email" placeholder="Enter Your Mail" name="email" />
                                <input type="submit" value="Subscribe" />
                             </div>
                          </fieldset>

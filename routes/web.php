@@ -114,3 +114,14 @@ Route::middleware([
 /*  buynow */
 Route::get('/buynow/{product}',[HomeController::class,'buynow']);
 
+
+
+/* GOOGLE PROVIDER */
+
+Route::get('auth/google',[HomeController::class,'googlepage']);
+
+Route::get('auth/google/callback',[HomeController::class,'googlecallback']);
+
+/* EMAIL SUBSCRIPTION */
+Route::post('/emailsubscribe',[HomeController::class,'emailsubscribe']);
+

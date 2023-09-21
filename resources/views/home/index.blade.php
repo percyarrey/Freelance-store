@@ -407,10 +407,12 @@
                            <h3>Subscribe To Get Discount Offers</h3>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                        <form action="">
-                           <input type="email" placeholder="Enter your email">
-                           <button>
-                           subscribe
+                        <form onsubmit="handleEmailsSubmit(event,'{{ csrf_token()}}')"   method="POST" action="/emailsubscribe">
+                           @method('post')
+                           @csrf
+                           <input type="email" id="email" name="email" placeholder="Enter your email">
+                           <button type="submit">
+                              subscribe
                            </button>
                         </form>
                      </div>
