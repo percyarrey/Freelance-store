@@ -109,11 +109,13 @@ Route::middleware([
     Route::post('/trackorder',[HomeController::class,'trackorder']);  
     Route::post('/trackorder/{order}',[HomeController::class,'confirmdelivery']);  
 
+    /* PLACED ORDERS */
+    Route::get('/placedorders',[HomeController::class,'placedorders']);
 
         /* RECENT ORDERS */
     Route::get('/recentorder',[HomeController::class,'recentorder']);
 
-    Route::post('/recentorder/{order}',[HomeController::class,'recenttrack']);
+    Route::get('/recentorder/{order}',[HomeController::class,'recenttrack']);
 });
 
 /*  buynow */

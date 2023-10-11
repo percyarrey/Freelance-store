@@ -25,9 +25,9 @@
                 {{$order->created_at}}
             </div>
             <div class="col-4">
-                <form class="h-100" action="/recentorder/{{$order->id}}" method="POST">
+                <form class="h-100" action="/recentorder/{{$order->id}}" method="GET">
                     @csrf
-                    @method('POST')
+                    @method('GET')
                     <button type="submit" class="btn btn-primary h-100">Track Order</button>
                 </form>
             </div>

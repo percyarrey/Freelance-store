@@ -30,6 +30,19 @@ class HomeController extends Controller
     {
         $usertype = Auth::user()->usertype;
         if($usertype == '1'){
+            $Order = Order::Where('new', 0)->count();
+            return view('admin.dashboard',compact('Order'));
+        }
+        else{
+            return redirect('/');
+            
+        }
+    }
+
+    public function placedorders()
+    {
+        $usertype = Auth::user()->usertype;
+        if($usertype == '1'){
             $orders = Order::orderBy('new', 'asc') // Order by 'latest' column in descending order
                 ->filter(request(['status']))
                 ->paginate(5);
@@ -265,10 +278,7 @@ class HomeController extends Controller
         $order = Order::where('order_id',$request->order_id)->first();
         if($order){
             if($order->user_id == Auth()->user()->id){
-                $products = Product::find(unserialize($order->product_id));
-                $quantity = unserialize($order->quantity);
-                $prices = unserialize($order->price);
-                return view('home.checkout.checkout',compact('order','products','quantity','prices'));
+                return redirect('/recentorder/'.$order->id);
             }
             return redirect()->back()->with('warning', 'You did not Placed this Order');
         }
@@ -282,7 +292,7 @@ class HomeController extends Controller
         if($usertype){
             $order->status='Delivered';
             $order->save();
-            return redirect()->back()->with('message','Status Updated Succesfully');
+            return redirect('/recentorder/'.$order->id)->with('message','Status Updated Succesfully');
         }
         return redirect('/')->back()->with('warning', 'Failed to Update Status');
         

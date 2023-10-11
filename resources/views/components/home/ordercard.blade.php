@@ -66,7 +66,7 @@
      </div>
    </div>
    
-  <div class=' d-flex mt-2' style="justify-content:space-around;">
+  <div class=' d-flex mt-2 py-4' style="justify-content:space-around;">
   @if (request()->is('orderdetail/'.$order->id) && Auth()->user()->usertype==1)
   <form  action="/orderdetail/{{$order->id}}" method="POST">
     @csrf
@@ -103,12 +103,12 @@
   </form>
 
   <!-- CONFIRM DELIVERED -->
-  @if (request()->is('trackorder'))
+  @if (request()->is('recentorder/'.$order->id) && $order->status !='Delivered')
   <form  action="/trackorder/{{$order->id}}" method="POST">
     @csrf
     @method('POST')
     {{-- CONFIRM DELIVERY --}}
-    <div class="btn btn-primary" onclick="showConfirmation({{'p'.$product->id}})">Confirm Delivery</div>
+    <div class="btn btn-outline-primary" onclick="showConfirmation({{'p'.$product->id}})">Confirm Delivery</div>
     <div class="modal fade" id="{{'p'.$product->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -134,10 +134,10 @@
    @endif
   </div>
     
-  @if (request()->is('trackorder'))
-    <div class="d-flex text-muted mt-3">
-      <i class="fa fa-alert"></i>
-      <p>Notify us of your Order is frozen and don't forget to add the <b>OrderId</b> <a href="/contact">Contact us</a></p>
+  @if (request()->is('recentorder/'.$order->id))
+    <div class="d-flex text-muted mt-3 align-items-center gap-3 px-lg-5 mt-2 mt-lg-5">
+      <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+      <div >Notify us of your Order is frozen or your have any Problem and don't forget to add the <b>OrderId</b> <a href="/contact" class="text-success">Contact us</a></div>
     </div>
   @endif
 </div>
