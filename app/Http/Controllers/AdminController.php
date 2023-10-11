@@ -10,8 +10,49 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SampleExport; // Replace with your export class
+
 class AdminController extends Controller
 {
+    /* STATISTICS */
+    public function statistics()
+    {
+        $products=[];
+        $quantity=[];
+        $usertype = Auth::user()->usertype;
+        
+        if($usertype =='1'){
+            $orders = Order::all();
+            foreach($orders as $order){
+                if($order->status=='Pending'){
+                    $array_products = unserialize($order->product_id);
+                    $array_quantity = unserialize($order->quantity);
+                    foreach($array_products as $index => $value){
+                        if(!(in_array($value,$products))){
+                            $products[]=$value;
+                            $quantity[]=$array_quantity[$index];
+                        }else{
+                            $index1 = array_search($value,$products);
+                            if($index1 !==false){
+                                $quantity[$index1] = $quantity[$index1] + $array_quantity[$index];
+                            }
+                        }
+                    }
+                }
+            }
+            $products = Product::find($products);
+            return view('admin.pages.statistics.statistics',compact('quantity','products'));
+        }
+        else{
+            return redirect('/');
+        }
+    }
+
+    public function downloadExcel()
+    {
+    }
+
     /*MANAGE CATEGORY */
     public function category()
     {

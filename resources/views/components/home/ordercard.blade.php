@@ -30,8 +30,7 @@
                       <option selected disabled >Select status</option>
                         <option value="Pending">Pending</option>
                         <option value="Processing">Processing</option>
-                        <option value="Shipped">Shipped</option>
-                        <option value="Delivered">Delivered</option>
+                        <option value="Delivering">Delivering</option>
                     </select>
                     <button type="submit" class="btn btn-success">Update Status</button>
                   </form>
@@ -67,7 +66,7 @@
      </div>
    </div>
    
-  <div class=' py-4 d-flex' style={{request()->is('orderdetail/'.$order->id) && Auth()->user()->usertype==1 ? "justify-content:space-between;" : "justify-content:center;" }}>
+  <div class=' d-flex mt-2' style="justify-content:space-around;">
   @if (request()->is('orderdetail/'.$order->id) && Auth()->user()->usertype==1)
   <form  action="/orderdetail/{{$order->id}}" method="POST">
     @csrf
@@ -102,6 +101,43 @@
     @csrf
     <button type="submit"  class="btn btn-success ">Download PDF</button>
   </form>
+
+  <!-- CONFIRM DELIVERED -->
+  @if (request()->is('trackorder'))
+  <form  action="/trackorder/{{$order->id}}" method="POST">
+    @csrf
+    @method('POST')
+    {{-- CONFIRM DELIVERY --}}
+    <div class="btn btn-primary" onclick="showConfirmation({{'p'.$product->id}})">Confirm Delivery</div>
+    <div class="modal fade" id="{{'p'.$product->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+            <div type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">X</span>
+            </div>
+          </div>
+          <div class="modal-body text-center">
+            Are you sure you want to <b class="text-success">Confirm</b> the Delivery this order?<br/>
+            <b class="text-warning">Bewarnded</b> It cannot be <b class="text-danger">undone</b>
+          </div>
+          <div class="modal-footer">
+            <div type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</div>
+
+            <button type="submit" class="btn btn-success">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+   @endif
   </div>
     
+  @if (request()->is('trackorder'))
+    <div class="d-flex text-muted mt-3">
+      <i class="fa fa-alert"></i>
+      <p>Notify us of your Order is frozen and don't forget to add the <b>OrderId</b> <a href="/contact">Contact us</a></p>
+    </div>
+  @endif
 </div>

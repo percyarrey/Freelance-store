@@ -68,6 +68,10 @@ Route::middleware([
         /* ADMIN ROUTE */
     Route::get('/redirect',[HomeController::class,'redirect']);
 
+    /* statistics */
+    Route::get('/statistics',[AdminController::class,'statistics']);
+    Route::post('/excel',[AdminController::class,'downloadExcel']);
+
     /*manage category */
     Route::get('/category',[AdminController::class,'category']);
     Route::post('/addcategory',[AdminController::class,'addcategory']);
@@ -102,7 +106,8 @@ Route::middleware([
     Route::post('/pdf/{order}', [HomeController::class, 'generatePdf'])->name('order.pdf');
 
         /* TRACK ORDER */
-    Route::post('/trackorder',[HomeController::class,'trackorder']);    
+    Route::post('/trackorder',[HomeController::class,'trackorder']);  
+    Route::post('/trackorder/{order}',[HomeController::class,'confirmdelivery']);  
 
 
         /* RECENT ORDERS */

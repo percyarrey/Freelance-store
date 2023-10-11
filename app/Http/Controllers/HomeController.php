@@ -30,7 +30,9 @@ class HomeController extends Controller
     {
         $usertype = Auth::user()->usertype;
         if($usertype == '1'){
-            $orders = Order::latest()->filter(request(['status']))->paginate(5);;
+            $orders = Order::orderBy('new', 'asc') // Order by 'latest' column in descending order
+                ->filter(request(['status']))
+                ->paginate(5);
             try{
                 Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
                 
@@ -268,8 +270,21 @@ class HomeController extends Controller
                 $prices = unserialize($order->price);
                 return view('home.checkout.checkout',compact('order','products','quantity','prices'));
             }
+            return redirect()->back()->with('warning', 'You did not Placed this Order');
         }
         return redirect()->back()->with('warning', 'Order thus not exist in our Records');
+        
+    }
+
+    public function confirmdelivery(Request $request, Order $order)
+    {   
+        $usertype = Auth::user()->usertype;
+        if($usertype){
+            $order->status='Delivered';
+            $order->save();
+            return redirect()->back()->with('message','Status Updated Succesfully');
+        }
+        return redirect('/')->back()->with('warning', 'Failed to Update Status');
         
     }
 

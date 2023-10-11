@@ -23,6 +23,7 @@
 			<div class="tabs-left row">
 				<ul class="nav nav-tabs col-12 col-sm-3 col-lg-2">
 					<li><a href="/redirect" class="{{ request()->is('redirect') ? ' active' : '' }}"><nobr>Placed orders</nobr></a></li>
+					<li><a href="/statistics"  class="{{ request()->is('statistics') ? ' active' : '' }}">Statistics</a></li>
 					<li><a href="/category"  class="{{ request()->is('category') ? ' active' : '' }}">Categories</a></li>
 					<li><a href="/addproduct"  class="{{ request()->is('addproduct') ? ' active' : '' }}"><nobr>Add Product</nobr></a></li>
 
