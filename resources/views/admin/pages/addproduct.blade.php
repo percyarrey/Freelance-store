@@ -31,7 +31,7 @@
         <select class="form-select rounded-start" aria-label="Category" id="category" name="category"  value="{{old('category')}}" >
             <option selected disabled >Select category</option>
             @foreach ($category as $cat)
-              <option value="{{$cat->category}}">{{$cat->category}}</option>
+              <option value="{{$cat->id}}">{{$cat->category}}</option>
             @endforeach
         </select>
             @error('category')

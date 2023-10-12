@@ -30,11 +30,18 @@
         </div>
     @endif
 
-    <form class='d-flex my-3 justify-content-center' action="/excel" method="POST">
-    @method('POST')
-    @csrf
-    <button type="submit"  class="btn btn-success ">Download EXCEL</button>
-  </form>
+    <div class="d-flex justify-content-around my-3">
+        <form action="/statistics" method="POST">
+            @method('POST')
+            @csrf
+            <button type="submit"  class="btn btn-success ">Download PDF</button>
+          </form>
+          <form  action="/generateExcel" method="POST">
+            @method('POST')
+            @csrf
+            <button type="submit"  class="btn btn-primary">Generate Excel</button>
+          </form>
+    </div>
         
 </div>
 @endsection

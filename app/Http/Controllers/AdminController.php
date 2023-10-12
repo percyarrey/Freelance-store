@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\SampleExport; // Replace with your export class
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class AdminController extends Controller
 {
@@ -49,8 +51,117 @@ class AdminController extends Controller
         }
     }
 
-    public function downloadExcel()
+    public function downloadpdf()
     {
+        $products=[];
+        $quantity=[];
+        $usertype = Auth::user()->usertype;
+        
+        if($usertype =='1'){
+            $orders = Order::all();
+            foreach($orders as $order){
+                if($order->status=='Pending'){
+                    $array_products = unserialize($order->product_id);
+                    $array_quantity = unserialize($order->quantity);
+                    foreach($array_products as $index => $value){
+                        if(!(in_array($value,$products))){
+                            $products[]=$value;
+                            $quantity[]=$array_quantity[$index];
+                        }else{
+                            $index1 = array_search($value,$products);
+                            if($index1 !==false){
+                                $quantity[$index1] = $quantity[$index1] + $array_quantity[$index];
+                            }
+                        }
+                    }
+                }
+            }
+            $products = Product::find($products);
+            $category = category::all();
+            $data = [
+                'products'=>$products,
+                'quantity'=>$quantity,
+                'category'=>$category,
+            ];
+            $pdf = new Dompdf();
+            $pdf->loadHtml(View::make('admin.pages.statistics.pdf', $data)->render());
+            $pdf->setPaper('A4', 'portrait');
+            $pdf->render();
+            return $pdf->stream('statistics.pdf');
+        }
+        else{
+            return redirect('/');
+        }
+        
+    }
+
+    public function generateExcel()
+    {
+        $products=[];
+        $quantity=[];
+        $usertype = Auth::user()->usertype;
+        
+        if($usertype =='1'){
+            $orders = Order::all();
+            foreach($orders as $order){
+                if($order->status=='Pending'){
+                    $array_products = unserialize($order->product_id);
+                    $array_quantity = unserialize($order->quantity);
+                    foreach($array_products as $index => $value){
+                        if(!(in_array($value,$products))){
+                            $products[]=$value;
+                            $quantity[]=$array_quantity[$index];
+                        }else{
+                            $index1 = array_search($value,$products);
+                            if($index1 !==false){
+                                $quantity[$index1] = $quantity[$index1] + $array_quantity[$index];
+                            }
+                        }
+                    }
+                }
+            }
+            $products = Product::find($products);
+            $category = category::all();
+
+            $data = [
+                ['Name', 'Category','Quantity Ordered'],
+            ];
+            foreach ($products as $loop => $product) {
+                $dataItem=[];
+                $dataItem[]=$product->name;
+                $foundCategory = 'Deleted';
+                    foreach ($category as $item) {
+                        if ($item->id === $product->category) {
+                            $foundCategory = $item->category;
+                            break;
+                        }
+                    }
+                $dataItem[] = $foundCategory;
+                $dataItem[] = $quantity[$loop];
+                $data[] = $dataItem;
+            }
+    
+            $csvFileName = 'statistics.csv';
+    
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
+            ];
+    
+            $callback = function () use ($data) {
+                $file = fopen('php://output', 'w');
+                foreach ($data as $row) {
+                    fputcsv($file, $row);
+                }
+                fclose($file);
+            };
+    
+            return Response::stream($callback, 200, $headers);
+        }
+        else{
+            return redirect('/');
+        }
+        
     }
 
     /*MANAGE CATEGORY */
@@ -135,6 +246,7 @@ class AdminController extends Controller
             'name' => ['required', Rule::unique('products','name')],
             'imgpath' => ['required', 'file', 'max:1024'],
             'quantity' => ['required'],
+            'category' =>['required'],
             'price' => ['required'],
             'description' => ['required']
         ]);
@@ -153,6 +265,7 @@ class AdminController extends Controller
             'name' => ['required'],
             'imgpath' => ['file', 'max:1024'],
             'quantity' => ['required'],
+            'category' =>['required'],
             'price' => ['required'],
             'description' => ['required']
         ]);

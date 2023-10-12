@@ -27,10 +27,10 @@
 
         {{-- CATEGORY --}}
         <label class="fw-bold  opacity-75" for="name" >Category</label>
-        <select class="form-select rounded-start" aria-label="Category" id="category" name="category"  value="{{$product->category}}">
-            <option selected disabled >Select category</option>
+        <select class="form-select rounded-start" aria-label="Category" id="category" name="category">
+            <option {{!$product->category ?'selected' : ''}} disabled >Select category</option>
             @foreach ($category as $cat)
-              <option value="{{$cat->id}}">{{$cat->category}}</option>
+              <option {{$product->category == $cat->id ?'selected' : ''}} value="{{$cat->id}}">{{$cat->category}}</option>
             @endforeach
         </select>
             @error('category')

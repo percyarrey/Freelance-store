@@ -46,21 +46,10 @@ class HomeController extends Controller
             $orders = Order::orderBy('new', 'asc') // Order by 'latest' column in descending order
                 ->filter(request(['status']))
                 ->paginate(5);
-            try{
-                Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
-                
-                return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Send');
-            }catch( Exception $e){
-                return view('admin.pages.placedorder',compact('orders'))->with('message', 'Welcome Email Not Send');
-            }
+                return view('admin.pages.placedorder',compact('orders'));
         }
         else{
-            try{
-                Mail::to('tanyitikuarrey@gmail.com')->send(new WelcomeEmail());
-                return redirect('/')->with('message', 'Welcome Email Send');
-            }catch(Exception $e){
-                return redirect('/')->with('warning', 'Welcome Email Not Send');
-            };
+            return view('/');
             
         }
     }

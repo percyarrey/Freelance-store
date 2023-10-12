@@ -70,8 +70,10 @@ Route::middleware([
 
     /* statistics */
     Route::get('/statistics',[AdminController::class,'statistics']);
-    Route::post('/excel',[AdminController::class,'downloadExcel']);
+    Route::post('/statistics',[AdminController::class,'downloadpdf']);
+    Route::post('/generateExcel',[AdminController::class,'generateExcel']);
 
+    
     /*manage category */
     Route::get('/category',[AdminController::class,'category']);
     Route::post('/addcategory',[AdminController::class,'addcategory']);
